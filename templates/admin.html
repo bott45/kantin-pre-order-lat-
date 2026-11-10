@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Admin Kantin{% endblock %}
+{% block content %}
+<section class="hero compact"><p class="eyebrow">PENGELOLAAN KANTIN</p><h1>Dashboard Admin</h1><p>Kelola menu, stok, dan pesanan yang masuk.</p></section>
+<div class="stats">
+  <div class="stat"><span>Total pesanan</span><strong>{{ jumlah_pesanan }}</strong></div>
+  <div class="stat"><span>Omzet pesanan selesai</span><strong>{{ omzet|rupiah }}</strong></div>
+</div>
+<section class="panel">
+<h2>Tambah menu</h2>
+<form method="post" class="form-grid">
+<input type="hidden" name="aksi" value="tambah_menu">
+<label>Nama menu<input name="nama" required></label>
+<label>Deskripsi<input name="deskripsi"></label>
+<label>Harga (Rp)<input type="number" name="harga" min="0" required></label>
+<label>Stok awal<input type="number" name="stok" min="0" required></label>
+<div class="full"><button class="btn" type="submit">Tambah Menu</button></div>
+</form>
+</section>
+<section class="panel">
+<h2>Daftar menu dan stok</h2>
+<div class="table-wrap"><table><tr><th>Menu</th><th>Harga</th><th>Stok</th><th>Ubah stok</th></tr>
+{% for m in menu %}<tr><td>{{ m.nama }}</td><td>{{ m.harga|rupiah }}</td><td>{{ m.stok }}</td><td>
+<form method="post" class="inline-form"><input type="hidden" name="aksi" value="stok"><input type="hidden" name="menu_id" value="{{ m.id }}"><input type="number" name="stok" min="0" value="{{ m.stok }}"><button class="btn small">Simpan</button></form>
+</td></tr>{% endfor %}
+</table></div>
+</section>
+<section class="panel">
+<h2>Pesanan masuk</h2>
+<div class="table-wrap"><table><tr><th>Kode / Pembeli</th><th>Kategori</th><th>Kontak</th><th>Waktu ambil</th><th>Total</th><th>Status</th><th>Perbarui</th></tr>
+{% for p in pesanan %}<tr>
+<td><strong>{{ p.kode }}</strong><br>{{ p.nama_pembeli }}</td><td>{{ p.kategori_pembeli }}</td><td>{{ p.no_hp }}</td><td>{{ p.waktu_ambil }}</td><td>{{ p.total|rupiah }}</td><td>{{ p.status }}</td>
+<td><form method="post" class="inline-form"><input type="hidden" name="aksi" value="status"><input type="hidden" name="pesanan_id" value="{{ p.id }}"><select name="status">{% for s in ['Menunggu','Diproses','Siap diambil','Selesai','Ditolak'] %}<option {% if p.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select><button class="btn small">Update</button></form></td>
+</tr>{% else %}<tr><td colspan="7">Belum ada pesanan.</td></tr>{% endfor %}
+</table></div>
+</section>
+{% endblock %}

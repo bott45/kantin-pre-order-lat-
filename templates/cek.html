@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Cek Pesanan{% endblock %}
+{% block content %}
+<section class="panel narrow">
+<h1>Cek status pesanan</h1>
+<form method="post">
+<label>Kode pesanan<input name="kode" required placeholder="Contoh: KTN260101123000"></label>
+<button class="btn" type="submit">Cari Pesanan</button>
+</form>
+{% if hasil %}
+<div class="result">
+<h3>{{ hasil.kode }}</h3>
+<p>Nama: {{ hasil.nama_pembeli }}</p>
+<p>Status: <strong>{{ hasil.status }}</strong></p>
+<p>Waktu pengambilan: {{ hasil.waktu_ambil }}</p>
+<p>Total: <strong>{{ hasil.total|rupiah }}</strong></p>
+</div>
+{% elif request.method == 'POST' %}
+<p class="muted">Kode pesanan tidak ditemukan. Periksa kembali kode yang dimasukkan.</p>
+{% endif %}
+</section>
+{% endblock %}

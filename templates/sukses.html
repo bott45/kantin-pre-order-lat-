@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Pesanan Berhasil{% endblock %}
+{% block content %}
+<section class="panel success-panel">
+  <div class="big-icon">✅</div><h1>Pre-order berhasil dibuat!</h1>
+  <p>Terima kasih, {{ nama }}. Simpan kode pesanan berikut untuk mengecek status dan mengambil pesanan.</p>
+  <div class="order-code">{{ kode }}</div>
+  <p>Total pembayaran: <strong>{{ total|rupiah }}</strong></p>
+  <a class="btn" href="{{ url_for('cek_pesanan') }}">Cek status pesanan</a>
+  <a class="text-link" href="{{ url_for('index') }}">Kembali ke menu</a>
+</section>
+{% endblock %}

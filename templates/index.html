@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Pre-Order Kantin Sekolah{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">PRAKTIS • MUDAH • TINGGAL AMBIL</p>
+  <h1>Pesan camilan favoritmu sebelum ke kantin.</h1>
+  <p>Untuk orang tua/wali siswa, guru, staf sekolah, dan pengunjung.</p>
+</section>
+<h2>Menu kantin</h2>
+<form method="post" action="{{ url_for('pesan') }}">
+  <div class="grid">
+  {% for item in menu %}
+    <article class="menu-card">
+      <div class="food-icon">🥡</div>
+      <div class="card-body">
+        <h3>{{ item.nama }}</h3>
+        <p class="muted">{{ item.deskripsi or 'Camilan favorit kantin sekolah.' }}</p>
+        <strong class="price">{{ item.harga|rupiah }}</strong>
+        <p class="stock">Stok tersedia: {{ item.stok }}</p>
+        <label>Jumlah
+          <input type="number" name="jumlah_{{ item.id }}" min="0" max="{{ item.stok }}" value="0" {% if item.stok == 0 %}disabled{% endif %}>
+        </label>
+      </div>
+    </article>
+  {% else %}
+    <p>Belum ada menu yang tersedia.</p>
+  {% endfor %}
+  </div>
+  <section class="panel">
+    <h2>Data pemesan</h2>
+    <div class="form-grid">
+      <label>Nama pembeli<input name="nama_pembeli" required placeholder="Nama lengkap"></label>
+      <label>Nomor HP / WhatsApp<input name="no_hp" required inputmode="tel" placeholder="08xxxxxxxxxx"></label>
+      <label>Kategori pembeli
+        <select name="kategori_pembeli" required>
+          <option value="">Pilih kategori</option>
+          {% for k in kategori %}<option>{{ k }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Waktu pengambilan<input type="datetime-local" name="waktu_ambil" required></label>
+      <label class="full">Catatan (opsional)<textarea name="catatan" rows="2" placeholder="Contoh: saus dipisah"></textarea></label>
+    </div>
+    <button class="btn" type="submit">Buat Pre-Order</button>
+  </section>
+</form>
+{% endblock %}
